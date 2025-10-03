@@ -109,7 +109,7 @@ class ServicioNotificaciones:
         print(f"[NOTIFICACIÓN] {usuario}: Préstamo de '{libro}'")
 
 
-class RepositorioArchivo(ABC):
+class IRepositorio(ABC):
     @abstractmethod
     def guardar(self, libros, prestamos):
         pass
@@ -118,7 +118,7 @@ class RepositorioArchivo(ABC):
     def cargar(self):
         pass
 
-class RepositorioBiblioteca(RepositorioArchivo):
+class RepositorioArchivo(IRepositorio):
     def __init__(self, archivo):
         self._archivo = archivo
 
@@ -135,17 +135,13 @@ class RepositorioBiblioteca(RepositorioArchivo):
         except:
             return False
 
-
-
-
-
 class SistemaBiblioteca:
     def __init__(self, repositorio, validador, notificador):
         self.libros = []
         self.prestamos = []
         self.contador_libro = 1
         self.contador_prestamo = 1
-        self.repositorio:RepositorioArchivo = repositorio
+        self.repositorio:IRepositorio = repositorio
         self.validador:ValidadorBiblioteca = validador
         self.notificador:ServicioNotificaciones = notificador
     
@@ -243,7 +239,7 @@ class SistemaBiblioteca:
 def main():
 
     validador = ValidadorBiblioteca()
-    repositorio = RepositorioBiblioteca("biblioteca.txt")
+    repositorio = RepositorioArchivo("biblioteca.txt")
     notificador = ServicioNotificaciones()
 
     sistema = SistemaBiblioteca(repositorio, validador, notificador)
