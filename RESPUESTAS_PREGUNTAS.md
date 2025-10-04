@@ -59,10 +59,7 @@ class IGestionBiblioteca:
 
 **Respuesta:**
 ```
-ISP (Interface Segregation Principle) dice que los clientes no
-deben depender de métodos que no usan. Esta interfaz mezcla
-responsabilidades (catálogo, préstamos, reportes y backups), obligando
-a implementaciones a definir métodos irrelevantes para su rol.
+ISP (Interface Segregation Principle) dice que los clientes no deben depender de métodos que no usan. Esta interfaz mezcla responsabilidades (catálogo, préstamos, reportes y backups), obligando a implementaciones a definir métodos irrelevantes para su rol.
 
 ```
 
