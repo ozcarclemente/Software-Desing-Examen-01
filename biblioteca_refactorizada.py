@@ -26,7 +26,7 @@ class Libro:
 
 class Prestamo:
     def __init__(self, id, libro_id, usuario, fecha):
-        self.id = libro_id
+        self.id = id
         self.libro_id = libro_id
         self.usuario = usuario
         self.fecha = fecha
@@ -89,19 +89,19 @@ class FactoryBusquedaLibro:
 class ValidadorBiblioteca:
     def validarTitulo(self, titulo):
         if not titulo or len(titulo) < 2:
-            return "Error: Título inválido"
+            raise ValueError("Error: Título inválido")
     
     def validarAutor(self, autor):
         if not autor or len(autor) < 3:
-            return "Error: Autor inválido"
+            raise ValueError("Error: Autor inválido")
         
     def validarISBN(self, isbn):
         if not isbn or len(isbn) < 10:
-            return "Error: ISBN inválido"
+            raise ValueError("Error: ISBN inválido")
     
     def validarUsuario(self, usuario):
         if not usuario or len(usuario) < 3:
-            return "Error: Nombre de usuario inválido"
+            raise ValueError("Error: Nombre de usuario inválido")
 
 
 class ServicioNotificaciones:
@@ -147,9 +147,9 @@ class SistemaBiblioteca:
     
     # VIOLACIÓN SRP: Mezcla validación + lógica de negocio + persistencia
     def agregar_libro(self, titulo, autor, isbn):
-        self.validador.validarAutor(titulo)
-        self.validador.validarAutor(titulo)
-        self.validador.validarISBN(titulo)
+        self.validador.validarTitulo(titulo)
+        self.validador.validarAutor(autor)
+        self.validador.validarISBN(isbn)
         
         # Lógica de negocio
         libro = Libro(self.contador_libro, titulo, autor, isbn)
