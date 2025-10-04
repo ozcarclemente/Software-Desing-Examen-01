@@ -146,7 +146,7 @@ Traceback (most recent call last):
 ValueError: Error: Título inválido
 ```
 
-### RespositorioArchivo
+### RepositorioArchivo
 
 La clase `RepositorioArchivo` (antes `RepositorioBiblioteca`) implementa la interfaz `IRepositorio`. Para instanciarla basta con pasar el nombre del archivo donde se almacenarán y cargarán los datos. De esta manera, se libera a `SistemaBiblioteca` de esa responsabilidad, cumpliendo así con el **Principio de Responsabilidad Única (SRP)**.
 

@@ -37,6 +37,7 @@ class Prestamo:
 # 🟢 EJERCICIO 1: Open/Closed Principle (30 pts - 25 min)
 # ======================================================
 
+# Intefaz Busqueda de Libro para Open/Closed Principle
 class BusquedaLibro(ABC):
     @abstractmethod
     def buscar(self, libros, valor):
@@ -65,7 +66,7 @@ class BusquedaPorDisponibilidad(BusquedaLibro):
             disponible = bool(valor)
         return [libro for libro in libros if libro.disponible == disponible]
 
-            
+# Factory para crear la instancia correspondiente según el criterio     
 class FactoryBusquedaLibro:
     _map = {
         "titulo": BusquedaPorTitulo,
@@ -86,6 +87,7 @@ class FactoryBusquedaLibro:
 # 🟡 EJERCICIO 2: Single Responsibility Principle (30 pts - 40 min)
 # ================================================================
 
+# Validadores de la Biblioteca
 class ValidadorBiblioteca:
     def validarTitulo(self, titulo):
         if not titulo or len(titulo) < 2:
@@ -103,12 +105,12 @@ class ValidadorBiblioteca:
         if not usuario or len(usuario) < 3:
             raise ValueError("Error: Nombre de usuario inválido")
 
-
+# Servicio de Notificaciones de Biblioteca
 class ServicioNotificaciones:
     def enviar(self, usuario, libro):
         print(f"[NOTIFICACIÓN] {usuario}: Préstamo de '{libro}'")
 
-
+# Interface de Repositorio de Biblioteca
 class IRepositorio(ABC):
     @abstractmethod
     def guardar(self, libros, prestamos):
@@ -118,6 +120,8 @@ class IRepositorio(ABC):
     def cargar(self):
         pass
 
+# Clase que implementea la interface de IRepositorio
+# Esta clase se enfoca en Repositorio de Archivo
 class RepositorioArchivo(IRepositorio):
     def __init__(self, archivo):
         self._archivo = archivo
@@ -134,7 +138,9 @@ class RepositorioArchivo(IRepositorio):
             return True
         except:
             return False
-
+        
+        
+# Clase que gestiona la biblioteca
 class SistemaBiblioteca:
     def __init__(self, repositorio, validador, notificador):
         self.libros = []
@@ -145,7 +151,6 @@ class SistemaBiblioteca:
         self.validador:ValidadorBiblioteca = validador
         self.notificador:ServicioNotificaciones = notificador
     
-    # VIOLACIÓN SRP: Mezcla validación + lógica de negocio + persistencia
     def agregar_libro(self, titulo, autor, isbn):
         self.validador.validarTitulo(titulo)
         self.validador.validarAutor(autor)
@@ -160,6 +165,7 @@ class SistemaBiblioteca:
         
         return f"Libro '{titulo}' agregado exitosamente"
     
+    # Método refactorizado (OCP)
     def buscar_libro(self, criterio, valor):
         claseBusqueda = FactoryBusquedaLibro.crear(criterio)
         resultados = claseBusqueda.buscar(self.libros, valor)
@@ -238,10 +244,12 @@ class SistemaBiblioteca:
 
 def main():
 
+    # Instanciar dependencias antes de Sistema de la Biblioteca
     validador = ValidadorBiblioteca()
     repositorio = RepositorioArchivo("biblioteca.txt")
     notificador = ServicioNotificaciones()
 
+    # Se pasan las instancias de clase en el constructor del Sistema Biblioteca
     sistema = SistemaBiblioteca(repositorio, validador, notificador)
     
     print("=== AGREGANDO LIBROS ===")

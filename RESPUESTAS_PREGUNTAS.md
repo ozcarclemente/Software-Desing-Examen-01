@@ -25,23 +25,22 @@ En el ejemplo, Estudiante hereda de Usuario y mantiene el mismo contrato: mismo 
 **b) (5 pts)** Da un ejemplo que VIOLE LSP y explica por qué:
 
 ```python
-# Tu código aquí
-class Usuario:
-    def calcular_limite_prestamos(self):
-        return 3
+class Auto:
+    def recargar_combustible(self):
+        print("El auto recarga gasolina en la estación de servicio")
 
-class Invitado(Usuario):
-    def calcular_limite_prestamos(self):
-        # Cambia el contrato: ahora lanza excepción en lugar de devolver un int
-        raise RuntimeError("Los invitados no pueden consultar el límite")
+
+class AutoElectrico(Auto):
+    def recargar_combustible(self):
+        raise NotImplementedError("Un auto eléctrico no usa gasolina")
 ```
 
-# Explicación:
+**Explicación:**
+```
+Viola LSP porque el código que espera un Auto (que siempre puede recargar combustible) recibe una excepción al pasarle un AutoElectrico. 
 
-Viola LSP porque el código que espera un int (como con Usuario) recibe
-una excepción. El subtipo no respeta el contrato del supertipo: cambia
-el efecto observable y rompe a los clientes que dependen del retorno.
-
+El subtipo no respeta el contrato del supertipo: cambia el efecto observable y rompe a los clientes que dependen de recargar_combustible().
+```
 
 ---
 
