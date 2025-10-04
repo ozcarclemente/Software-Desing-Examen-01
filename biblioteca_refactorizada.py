@@ -161,7 +161,7 @@ class SistemaBiblioteca:
         return f"Libro '{titulo}' agregado exitosamente"
     
     def buscar_libro(self, criterio, valor):
-        claseBusqueda = FactoryBusquedaLibro().crear(criterio)
+        claseBusqueda = FactoryBusquedaLibro.crear(criterio)
         resultados = claseBusqueda.buscar(self.libros, valor)
         return resultados
     
